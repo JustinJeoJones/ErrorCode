@@ -1,0 +1,23 @@
+<h1>{{ DisplayEvent.Name }}</h1>
+<p>{{ DisplayEvent.Location }}</p>
+
+<p *ngIf="DisplayEvent.Cost > 0; else Free">
+    Cost: {{ DisplayEvent.Cost | currency }}
+</p>
+
+<ng-template #Free>
+    <p>Free</p>
+</ng-template>
+
+<div [ngPlural]="this.DisplayEvent.Guest">
+    <ng-template ngPluralCase="=0">
+        <p *ngIf="DisplayEvent.Guest == 0; else Limited">Unlimited Guests</p>
+        <ng-template #Limited>No one has signed up: 0/{{ DisplayEvent.Guest }}</ng-template>
+    </ng-template>
+    <ng-template ngPluralCase="=1">A guest has signed up: 1/{{ DisplayEvent.Guest }}</ng-template>
+    <ng-template ngPluralCase="other">Multiple guests signed up: {{ DisplayEvent.SignedUp }}/{{ DisplayEvent.Guest }}</ng-template>
+</div>
+
+<div *ngIf="DisplayEvent.Guest >=1" class="progress-bar">
+    <div class="progress-bar-fill" [style.width]="ProgressBar()"></div>
+</div>
